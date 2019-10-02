@@ -18,17 +18,17 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public IEnumerable<Product> GetAll(int size = 100)
         {
-            return await _dbContext.Product
-                    .Include(x => x.ProductModel)
-                    .Include(x => x.ProductReview)
-                    .SingleOrDefaultAsync(x => x.ProductId == id);
+            return _dbContext.Product.Take(size).ToList();
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync(int size = 100)
+        public Product GetById(int id)
         {
-            return await _dbContext.Product.Take(size).ToListAsync();
+            return _dbContext.Product
+                    .Include(x => x.ProductModel)
+                    .Include(x => x.ProductReview)
+                    .SingleOrDefault(x => x.ProductId == id);
         }
 
         public void Add(Product product)
@@ -49,10 +49,10 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<ProductReview>> GetProductReviewsAsync(int productId)
+        public IEnumerable<ProductReview> GetProductReviews(int productId)
         {
-            return await _dbContext.ProductReview.Include(x => x.Product)
-                .Where(x => x.ProductId == productId).ToListAsync();
+            return _dbContext.ProductReview.Include(x => x.Product)
+                .Where(x => x.ProductId == productId).ToList();
         }
     }
 }

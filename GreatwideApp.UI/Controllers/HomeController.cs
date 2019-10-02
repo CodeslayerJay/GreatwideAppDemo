@@ -8,22 +8,23 @@ using GreatwideApp.UI.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Diagnostics;
 using GreatwideApp.Infrastructure.Data;
+using GreatwideApp.Domain.Interfaces.Repositories;
 
 namespace GreatwideApp.UI.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext dbContext)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            return Json(_dbContext.Product.ToList());
+            return Json(_unitOfWork.Products.GetAll());
             //return View();
         }
 

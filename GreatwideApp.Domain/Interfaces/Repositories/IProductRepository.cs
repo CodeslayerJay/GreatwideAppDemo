@@ -7,9 +7,10 @@ namespace GreatwideApp.Domain.Interfaces.Repositories
     public interface IProductRepository
     {
         void Add(Product product);
-        Task<IEnumerable<Product>> GetAllAsync(int size = 100);
-        Task<Product> GetByIdAsync(int id);
-        Task<IEnumerable<ProductReview>> GetProductReviewsAsync(int productId);
+        IEnumerable<Product> GetAll(int size = 100);
+        
+        Product GetById(int id);
+        IEnumerable<ProductReview> GetProductReviews(int productId);
         void Remove(int id);
     }
 }
