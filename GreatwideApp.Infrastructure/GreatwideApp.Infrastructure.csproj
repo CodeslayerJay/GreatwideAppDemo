@@ -18,8 +18,4 @@
     <ProjectReference Include="..\GreatwideApp.Domain\GreatwideApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Repositories\" />
-  </ItemGroup>
-
 </Project>

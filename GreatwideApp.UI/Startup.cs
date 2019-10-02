@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GreatwideApp.Domain.Interfaces.Repositories;
 using GreatwideApp.Infrastructure.Data;
+using GreatwideApp.Infrastructure.Data.Repositories;
+using GreatwideApp.UI.Models.MappingProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +37,9 @@ namespace GreatwideApp.UI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            // Dependencies
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AdventureWorks")));
