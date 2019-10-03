@@ -50,10 +50,5 @@ namespace GreatwideApp.Domain.Services
             return _unitOfWork.Products.GetById(productId);
         }
 
-        public Product GetProductByStoredProcedure(int productId)
-        {
-            return _unitOfWork.Products.SP_GetById(productId);
-        }
-
     }
 }

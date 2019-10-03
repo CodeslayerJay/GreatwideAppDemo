@@ -24,7 +24,7 @@ namespace GreatwideApp.UI.Controllers
         }
         public IActionResult Index()
         {
-            var product = _productService.GetProductByStoredProcedure(1);
+            var product = _productService.GetProducts(10);
             return Json(product);
             //return View();
         }

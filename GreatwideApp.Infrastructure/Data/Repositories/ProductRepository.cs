@@ -1,11 +1,11 @@
 ﻿using GreatwideApp.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GreatwideApp.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreatwideApp.Infrastructure.Data.Repositories
 {
@@ -23,7 +23,6 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             return _dbContext.Product.Take(size).ToList();
         }
 
-        // Use EntityFramework + LINQ to Query
         public Product GetById(int id)
         {
             return _dbContext.Product
@@ -31,15 +30,7 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
                     .Include(x => x.ProductReview)
                     .SingleOrDefault(x => x.ProductId == id);
         }
-
-        // Use EF with Stored Procedure Example
-        public Product SP_GetById(int id)
-        {
-             var product = _dbContext.Product.FromSql($"spProducts_GetProduct {id} ").FirstOrDefault();
-            return product;
-        }
-
-
+        
         public void Add(Product product)
         {
             if (product != null)

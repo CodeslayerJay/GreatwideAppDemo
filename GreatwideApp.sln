@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatwideApp.UI", "GreatwideApp.UI\GreatwideApp.UI.csproj", "{F64575B5-3EA0-49D2-A4F1-2D468CB0AA7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreatwideApp.Domain", "GreatwideApp.Domain\GreatwideApp.Domain.csproj", "{ECD4AC0D-022A-4C5C-ACD4-29B659E84C76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatwideApp.Domain", "GreatwideApp.Domain\GreatwideApp.Domain.csproj", "{ECD4AC0D-022A-4C5C-ACD4-29B659E84C76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreatwideApp.Infrastructure", "GreatwideApp.Infrastructure\GreatwideApp.Infrastructure.csproj", "{C317AA97-3FA6-4A1E-B68A-75FE6C4173F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatwideApp.Infrastructure", "GreatwideApp.Infrastructure\GreatwideApp.Infrastructure.csproj", "{C317AA97-3FA6-4A1E-B68A-75FE6C4173F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreatwideApp.UI", "GreatwideApp.UI\GreatwideApp.UI.csproj", "{775065E4-FBE1-4460-B0B9-2C4D5EEEC7BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F64575B5-3EA0-49D2-A4F1-2D468CB0AA7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F64575B5-3EA0-49D2-A4F1-2D468CB0AA7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F64575B5-3EA0-49D2-A4F1-2D468CB0AA7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F64575B5-3EA0-49D2-A4F1-2D468CB0AA7E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECD4AC0D-022A-4C5C-ACD4-29B659E84C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECD4AC0D-022A-4C5C-ACD4-29B659E84C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECD4AC0D-022A-4C5C-ACD4-29B659E84C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{C317AA97-3FA6-4A1E-B68A-75FE6C4173F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C317AA97-3FA6-4A1E-B68A-75FE6C4173F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C317AA97-3FA6-4A1E-B68A-75FE6C4173F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775065E4-FBE1-4460-B0B9-2C4D5EEEC7BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775065E4-FBE1-4460-B0B9-2C4D5EEEC7BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775065E4-FBE1-4460-B0B9-2C4D5EEEC7BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775065E4-FBE1-4460-B0B9-2C4D5EEEC7BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

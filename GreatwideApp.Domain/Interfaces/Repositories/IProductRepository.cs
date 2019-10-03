@@ -10,7 +10,7 @@ namespace GreatwideApp.Domain.Interfaces.Repositories
         IEnumerable<Product> GetAll(int size = 100);
         
         Product GetById(int id);
-        Product SP_GetById(int id);
+        
         IEnumerable<ProductReview> GetProductReviews(int productId);
         void Remove(int id);
     }
