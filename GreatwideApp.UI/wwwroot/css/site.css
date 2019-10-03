@@ -42,11 +42,12 @@ html {
 }
 
 body {
+    padding-top: 60px;
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
 .footer {
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 100%;
   white-space: nowrap;

@@ -7,7 +7,7 @@ namespace GreatwideApp.Domain.Entities
     {
         public ProductModel()
         {
-            Product = new HashSet<Product>();
+            Products = new HashSet<Product>();
         }
 
         public int ProductModelId { get; set; }
@@ -17,7 +17,7 @@ namespace GreatwideApp.Domain.Entities
         
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
         
     }
 }

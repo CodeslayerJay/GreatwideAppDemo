@@ -7,7 +7,7 @@ namespace GreatwideApp.Domain.Entities
     {
         public Product()
         {
-            ProductReview = new HashSet<ProductReview>();
+            ProductReviews = new HashSet<ProductReview>();
             
         }
 
@@ -28,7 +28,7 @@ namespace GreatwideApp.Domain.Entities
 
         public virtual ProductModel ProductModel { get; set; }
         
-        public virtual ICollection<ProductReview> ProductReview { get; set; }
+        public virtual ICollection<ProductReview> ProductReviews { get; set; }
         
     }
 }

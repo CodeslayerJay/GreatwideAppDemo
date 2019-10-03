@@ -8,7 +8,7 @@ namespace GreatwideApp.Domain.Interfaces.Services
         void DeleteProduct(int productId);
         Product GetProduct(int productId);
         
-        IEnumerable<Product> GetProducts(int size = 100);
+        IEnumerable<Product> GetProducts(int skip = 0, int size = 30);
         void SaveProduct(Product product);
     }
 }

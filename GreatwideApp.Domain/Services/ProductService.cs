@@ -40,9 +40,9 @@ namespace GreatwideApp.Domain.Services
             _unitOfWork.Products.Remove(productId);
         }
 
-        public IEnumerable<Product> GetProducts(int size = 100)
+        public IEnumerable<Product> GetProducts(int skip = 0, int size = 30)
         {
-            return _unitOfWork.Products.GetAll(size);
+            return _unitOfWork.Products.GetAll(skip, size);
         }
 
         public Product GetProduct(int productId)

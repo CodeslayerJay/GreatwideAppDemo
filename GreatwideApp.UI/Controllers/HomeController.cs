@@ -8,6 +8,8 @@ using GreatwideApp.UI.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Diagnostics;
 using GreatwideApp.Domain.Interfaces.Services;
+using AutoMapper;
+using GreatwideApp.UI.Models.ViewModels;
 
 namespace GreatwideApp.UI.Controllers
 {
@@ -15,18 +17,20 @@ namespace GreatwideApp.UI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        public HomeController(ILogger<HomeController> logger, IProductService productService, IMapper mapper)
         {
             _logger = logger;
             _productService = productService;
+            _mapper = mapper;
             
         }
         public IActionResult Index()
         {
-            var product = _productService.GetProducts(10);
-            return Json(product);
-            //return View();
+            var products = _productService.GetProducts(size: 3).Select(x => _mapper.Map<ProductViewModel>(x));
+            
+            return View(products);
         }
 
         public IActionResult Privacy()

@@ -18,16 +18,19 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Product> GetAll(int size = 100)
+        public IEnumerable<Product> GetAll(int skip = 0, int size = 100)
         {
-            return _dbContext.Product.Take(size).ToList();
+            return _dbContext.Product
+                .Include(x => x.ProductModel)
+                .Skip(skip)
+                .Take(size).OrderBy(x => x.ModifiedDate).ToList();
         }
 
         public Product GetById(int id)
         {
             return _dbContext.Product
                     .Include(x => x.ProductModel)
-                    .Include(x => x.ProductReview)
+                    .Include(x => x.ProductReviews)
                     .SingleOrDefault(x => x.ProductId == id);
         }
         
