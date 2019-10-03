@@ -11,9 +11,10 @@
             <h1>Welcome!</h1>
         </div>
         <div class="col-12">
-            @if (Model.Any())
+            @if (Model != null && Model.Any())
             {
                 <h4>Check out our latest products!</h4>
+
                 <div class="row">
                 @foreach(var product in Model)
                 {
@@ -24,9 +25,9 @@
                                 <h4 class="card-title">
                                     <a href="#">@product.Name</a>
                                 </h4>
-                                <h5>@product.ListPrice</h5>
+                                <h5>$ @product.ListPrice</h5>
                                 <p class="card-text">
-                                    @product.ProductModel.Name
+                                    Model: @product.ProductModel.Name
                                 </p>
                             </div>
                             <div class="card-footer">
@@ -35,6 +36,17 @@
                         </div>
                     </div>
                 }
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <h4>
+                            Or view all of our amazing products! <br/>
+                            <a asp-action="Index" asp-controller="Products" class="btn btn-primary">
+                                Check it out &rarr;
+                            </a>
+                        </h4>
+                    </div>
                 </div>
             }
             else

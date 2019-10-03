@@ -42,6 +42,12 @@ namespace GreatwideApp.Domain.Services
 
         public IEnumerable<Product> GetProducts(int skip = 0, int size = 30)
         {
+            if (size <= 0 || size > 300)
+                size = 30;
+
+            if (skip < 0)
+                skip = 0;
+
             return _unitOfWork.Products.GetAll(skip, size);
         }
 

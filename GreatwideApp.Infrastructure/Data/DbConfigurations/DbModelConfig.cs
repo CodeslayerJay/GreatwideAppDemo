@@ -35,7 +35,7 @@ namespace GreatwideApp.Infrastructure.Data.DbConfigurations
             productEntity.Property(e => e.Color).HasMaxLength(15);
 
             productEntity.Property(e => e.ListPrice)
-                .HasColumnType("money")
+                .HasColumnType("decimal(18,2)")
                 .IsRequired();
             
             productEntity.Property(e => e.ModifiedDate)

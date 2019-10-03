@@ -21,6 +21,9 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
         public IEnumerable<Product> GetAll(int skip = 0, int size = 100)
         {
             return _dbContext.Product
+                .Where(x => x.ProductId > 0)
+                .Where(x => x.ListPrice > 0)
+                .Where(x => x.ProductModelId > 0)
                 .Include(x => x.ProductModel)
                 .Skip(skip)
                 .Take(size).OrderBy(x => x.ModifiedDate).ToList();
