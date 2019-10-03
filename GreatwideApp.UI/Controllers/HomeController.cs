@@ -7,24 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using GreatwideApp.UI.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Diagnostics;
-using GreatwideApp.Infrastructure.Data;
-using GreatwideApp.Domain.Interfaces.Repositories;
+using GreatwideApp.Domain.Interfaces.Services;
 
 namespace GreatwideApp.UI.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
+            _productService = productService;
+            
         }
         public IActionResult Index()
         {
-            return Json(_unitOfWork.Products.GetAll());
+            var product = _productService.GetProductByStoredProcedure(1);
+            return Json(product);
             //return View();
         }
 

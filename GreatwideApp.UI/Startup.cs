@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GreatwideApp.Domain.Interfaces.Repositories;
+using GreatwideApp.Domain.Interfaces.Services;
+using GreatwideApp.Domain.Services;
 using GreatwideApp.Infrastructure.Data;
 using GreatwideApp.Infrastructure.Data.Repositories;
 using GreatwideApp.UI.Models.MappingProfiles;
@@ -40,6 +42,7 @@ namespace GreatwideApp.UI
             // Dependencies
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddDbContext<ApplicationDbContext>(options =>
