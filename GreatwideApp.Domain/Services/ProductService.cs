@@ -17,6 +17,10 @@ namespace GreatwideApp.Domain.Services
             _unitOfWork = unitOfWork;
         }
 
+        public IEnumerable<ProductModel> GetAllProductModels()
+        {
+            return _unitOfWork.Products.GetAllProductModels();
+        }
 
         public void SaveProduct(Product product)
         {

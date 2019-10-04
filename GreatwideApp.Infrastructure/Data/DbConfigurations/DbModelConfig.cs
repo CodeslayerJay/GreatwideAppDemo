@@ -17,108 +17,86 @@ namespace GreatwideApp.Infrastructure.Data.DbConfigurations
 
         public void ConfigureProduct()
         {
-            var productEntity = _modelBuilder.Entity<Product>();
-
-            productEntity.ToTable("Product", "Production");
-
-            productEntity.HasIndex(e => e.Name)
+            _modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasIndex(e => e.Name)
                     .HasName("AK_Product_Name")
                     .IsUnique();
 
-            productEntity.HasIndex(e => e.ProductNumber)
+                entity.HasIndex(e => e.ProductNumber)
                     .HasName("AK_Product_ProductNumber")
                     .IsUnique();
 
-            productEntity.Property(e => e.ProductId).HasColumnName("ProductID");
+                entity.HasIndex(e => e.Rowguid)
+                    .HasName("AK_Product_rowguid")
+                    .IsUnique();
 
+                entity.Property(e => e.FinishedGoodsFlag).HasDefaultValueSql("((1))");
 
-            productEntity.Property(e => e.Color).HasMaxLength(15);
+                entity.Property(e => e.MakeFlag).HasDefaultValueSql("((1))");
 
-            productEntity.Property(e => e.ListPrice)
-                .HasColumnType("decimal(18,2)")
-                .IsRequired();
-            
-            productEntity.Property(e => e.ModifiedDate)
-                    .HasColumnType("datetime");
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.Rowguid).HasDefaultValueSql("(newid())");
+            });
 
-            productEntity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            
-            productEntity.Property(e => e.ProductModelId).HasColumnName("ProductModelID");
+        }
 
-            productEntity.Property(e => e.ProductNumber)
-                    .IsRequired()
-                    .HasMaxLength(25);
+        public void ConfigureProductDescription()
+        {
+            _modelBuilder.Entity<ProductDescription>(entity =>
+            {
+                entity.HasIndex(e => e.Rowguid)
+                    .HasName("AK_ProductDescription_rowguid")
+                    .IsUnique();
 
-            productEntity.Property(e => e.Size).HasMaxLength(5);
-            
-            productEntity.Property(e => e.Style).HasMaxLength(2);
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.Rowguid).HasDefaultValueSql("(newid())");
+            });
         }
 
         public void ConfigureProductModel()
         {
-            var productModelEntity = _modelBuilder.Entity<ProductModel>();
+            _modelBuilder.Entity<ProductModel>(entity =>
+            {
+                entity.HasIndex(e => e.CatalogDescription)
+                    .HasName("PXML_ProductModel_CatalogDescription");
 
-            productModelEntity.ToTable("ProductModel", "Production");
+                entity.HasIndex(e => e.Instructions)
+                    .HasName("PXML_ProductModel_Instructions");
 
-            productModelEntity.HasIndex(e => e.CatalogDescription)
-                .HasName("PXML_ProductModel_CatalogDescription");
+                entity.HasIndex(e => e.Name)
+                    .HasName("AK_ProductModel_Name")
+                    .IsUnique();
 
-            productModelEntity.HasIndex(e => e.Instructions)
-                .HasName("PXML_ProductModel_Instructions");
+                entity.HasIndex(e => e.Rowguid)
+                    .HasName("AK_ProductModel_rowguid")
+                    .IsUnique();
 
-            productModelEntity.HasIndex(e => e.Name)
-                .HasName("AK_ProductModel_Name")
-                .IsUnique();
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
-            productModelEntity.Property(e => e.ProductModelId).HasColumnName("ProductModelID");
-
-            productModelEntity.Property(e => e.CatalogDescription).HasColumnType("xml");
-
-            productModelEntity.Property(e => e.Instructions).HasColumnType("xml");
-
-            productModelEntity.Property(e => e.ModifiedDate)
-                .HasColumnType("datetime");
-                
-
-            productModelEntity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+                entity.Property(e => e.Rowguid).HasDefaultValueSql("(newid())");
+            });
 
         }
 
         public void ConfigureProductReview()
         {
-            var productReviewEntity = _modelBuilder.Entity<ProductReview>();
+            _modelBuilder.Entity<ProductReview>(entity =>
+            {
+                entity.HasIndex(e => new { e.Comments, e.ProductId, e.ReviewerName })
+                    .HasName("IX_ProductReview_ProductID_Name");
 
-            productReviewEntity.ToTable("ProductReview", "Production");
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
-            productReviewEntity.HasIndex(e => new { e.Comments, e.ProductId, e.ReviewerName })
-                .HasName("IX_ProductReview_ProductID_Name");
+                entity.Property(e => e.ReviewDate).HasDefaultValueSql("(getdate())");
 
-            productReviewEntity.Property(e => e.ProductReviewId).HasColumnName("ProductReviewID");
-
-            productReviewEntity.Property(e => e.Comments).HasMaxLength(3850);
-
-            productReviewEntity.Property(e => e.EmailAddress)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            productReviewEntity.Property(e => e.ModifiedDate)
-                .HasColumnType("datetime");
-            
-            productReviewEntity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-            productReviewEntity.Property(e => e.ReviewDate)
-                .HasColumnType("datetime");
-
-
-            productReviewEntity.Property(e => e.ReviewerName)
-                .IsRequired()
-                .HasMaxLength(50);
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductReviews)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
         }
     }
 }

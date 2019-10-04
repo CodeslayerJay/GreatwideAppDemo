@@ -60,5 +60,11 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             return _dbContext.ProductReview.Include(x => x.Product)
                 .Where(x => x.ProductId == productId).ToList();
         }
+
+        public IEnumerable<ProductModel> GetAllProductModels()
+        {
+            return _dbContext.ProductModel.Where(x => x.ProductModelId > 0)
+                .OrderBy(x => x.Name).ToList();
+        }
     }
 }

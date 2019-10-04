@@ -13,5 +13,6 @@ namespace GreatwideApp.Domain.Interfaces.Repositories
         
         IEnumerable<ProductReview> GetProductReviews(int productId);
         void Remove(int id);
+        IEnumerable<ProductModel> GetAllProductModels();
     }
 }

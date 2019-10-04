@@ -14,6 +14,8 @@ namespace GreatwideApp.UI.Models.MappingProfiles
         {
             // Product Mappings
             CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, ProductFormModel>();
+            CreateMap<ProductFormModel, Product>();
 
             // Product Model Mappings
             CreateMap<ProductModel, ProductModelViewModel>();

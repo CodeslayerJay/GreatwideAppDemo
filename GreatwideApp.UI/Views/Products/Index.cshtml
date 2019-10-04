@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductViewModel>
+﻿@model ProductIndexViewModel
 @{
     ViewData["Title"] = "Products";
 }
@@ -9,11 +9,11 @@
         <div class="col-12">
             <h2>Products</h2>
         </div>
-        @if (Model != null && Model.Any())
+        @if (Model.Products != null && Model.Products.Any())
         {
 
             <div class="row">
-                @foreach (var product in Model)
+                @foreach (var product in Model.Products)
                 {
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
@@ -31,6 +31,36 @@
                         </div>
                     </div>
                 }
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    @if (Model.Pagination.TotalPages > 1)
+                    {
+                        <div class="row">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" asp-ation="Index" asp-route-page="1">First Page</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-ation="Index" asp-route-page="@Model.Pagination.PrevPage">Prev</a>
+                                    </li>
+
+
+
+                                    <li class="page-item">
+                                        <a class="page-link" asp-ation="Index" asp-route-page="@Model.Pagination.NextPage">Next</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-ation="Index" asp-route-page="@Model.Pagination.LastPage">Last Page</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                </div>
             </div>
         }
         else

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GreatwideApp.Domain.Entities;
 using GreatwideApp.Domain.Interfaces.Services;
+using GreatwideApp.UI.Models;
 using GreatwideApp.UI.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
 namespace GreatwideApp.UI.Controllers
@@ -22,14 +25,19 @@ namespace GreatwideApp.UI.Controllers
             _productService = productService;
             _mapper = mapper;
         }
-        public IActionResult Index(int size = 15, int skip = 0)
+        public IActionResult Index(int size = 15, int skip = 1)
         {
             try
             {
                 var products = _productService.GetProducts(skip, size)
                                     .Select(x => _mapper.Map<ProductViewModel>(x));
+                var viewModel = new ProductIndexViewModel
+                {
+                    Products = products,
+                    Pagination = new Pagination(products.Count(), size, skip)
+                };
 
-                return View(products);
+                return View(viewModel);
             }
             catch(Exception ex)
             {
@@ -41,6 +49,83 @@ namespace GreatwideApp.UI.Controllers
             }
         }
 
-        
+        [HttpGet("Edit/{id?}")]
+        public IActionResult Edit(int? id)
+        {
+            try
+            {
+                var viewModel = new ProductFormModel();
+
+                if (id.HasValue)
+                {
+                    var product = _productService.GetProduct(id.Value);
+
+                    if (product == null)
+                    {
+                        TempData["InfoMessage"] = "Product not found.";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    viewModel = _mapper.Map<ProductFormModel>(product);
+                }
+
+                viewModel.ProductModelSelectItems = _productService.GetAllProductModels()
+                        .Select(x => new SelectListItem { Value = x.ProductModelId.ToString(), Text = x.Name });
+
+                return View("ProductForm", viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex.Message);
+
+                //NOTE: Using magic strings only for this demo...usually put in separate class
+                TempData["Error"] = "An error occurred, please try again.";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost("save")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Save(ProductFormModel formModel)
+        {
+            //var _validator = new VehicleValidator();
+            //var results = _validator.Validate(formModel);
+
+            //if (results.Errors.Any())
+            //{
+            //    foreach (var error in results.Errors)
+            //    {
+            //        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            //    }
+            //}
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    // If productId is default init of 0 then user is creating a new
+                    // product -> map properties to new product. 
+                    // Else: get product being edited from repo and map changes.
+                    var product = (formModel.ProductId == 0) ?
+                        _mapper.Map<Product>(formModel) :
+                        _mapper.Map<ProductFormModel, Product>(formModel, _productService.GetProduct(formModel.ProductId));
+
+                    _productService.SaveProduct(product);
+
+                    //return RedirectToAction(nameof(Details), new { id = vehicle.Id });
+                    return Json(product);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning("Error attempting to save product", ex.Message);
+                    TempData["Error"] = "Error attempting to save product. Please try again.";
+                }
+            }
+
+            formModel.ProductModelSelectItems = _productService.GetAllProductModels()
+                        .Select(x => new SelectListItem { Value = x.ProductModelId.ToString(), Text = x.Name });
+            return View("ProductForm", formModel);
+        }
     }
 }
