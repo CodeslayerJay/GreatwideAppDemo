@@ -105,18 +105,17 @@ namespace GreatwideApp.UI.Controllers
                 try
                 {
 
-                    // If productId is the default value of 0 then user is creating a new
-                    // product -> map properties to new a product. 
-                    // Else: get product being edited from repo and map changes.
                     var product = (formModel.ProductId == AppStrings.NotSet) ?
-                        _mapper.Map<Product>(formModel) :
-                        _mapper.Map<ProductFormModel, Product>(formModel, _productService.GetProduct(formModel.ProductId));
+                        // Map form model to new entity
+                            _mapper.Map<Product>(formModel) :
+                        // Map form model to existing entity
+                            _mapper.Map<ProductFormModel, Product>(formModel, _productService.GetProduct(formModel.ProductId));
 
                     _productService.SaveProduct(product);
                     
                     TempData["SuccessMessage"] = AppStrings.ProductEditSuccessMessage;
                     //return RedirectToAction(nameof(Details), new { id = vehicle.Id });
-                    return Json(product);
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {

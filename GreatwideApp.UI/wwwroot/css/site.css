@@ -7,6 +7,15 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.alert-dismissible {
+    position: fixed;
+    top: 50px;
+    right: 5px;
+    width: 30%;
+    z-index: 500;
+    padding: 20px;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
