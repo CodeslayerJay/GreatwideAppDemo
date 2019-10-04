@@ -6,7 +6,9 @@ using AutoMapper;
 using GreatwideApp.Domain.Entities;
 using GreatwideApp.Domain.Interfaces.Services;
 using GreatwideApp.UI.Models;
+using GreatwideApp.UI.Models.Validators;
 using GreatwideApp.UI.Models.ViewModels;
+using GreatwideApp.UI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -44,7 +46,7 @@ namespace GreatwideApp.UI.Controllers
                 _logger.LogInformation($"Something occured while processing request on Products/Index: {ex.Message}");
 
                 // Display a friendly message
-                TempData["Error"] = "An error occured. Please try again.";
+                TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -78,8 +80,7 @@ namespace GreatwideApp.UI.Controllers
             {
                 _logger.LogWarning(ex.Message);
 
-                //NOTE: Using magic strings only for this demo...usually put in separate class
-                TempData["Error"] = "An error occurred, please try again.";
+                TempData["ErrorMessge"] = AppStrings.GenericErrorMsg;
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -88,38 +89,39 @@ namespace GreatwideApp.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Save(ProductFormModel formModel)
         {
-            //var _validator = new VehicleValidator();
-            //var results = _validator.Validate(formModel);
+            var _validator = new ProductValidator();
+            var results = _validator.Validate(formModel);
 
-            //if (results.Errors.Any())
-            //{
-            //    foreach (var error in results.Errors)
-            //    {
-            //        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            //    }
-            //}
+            if (results.Errors.Any())
+            {
+                foreach (var error in results.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
 
-                    // If productId is default init of 0 then user is creating a new
-                    // product -> map properties to new product. 
+                    // If productId is the default value of 0 then user is creating a new
+                    // product -> map properties to new a product. 
                     // Else: get product being edited from repo and map changes.
-                    var product = (formModel.ProductId == 0) ?
+                    var product = (formModel.ProductId == AppStrings.NotSet) ?
                         _mapper.Map<Product>(formModel) :
                         _mapper.Map<ProductFormModel, Product>(formModel, _productService.GetProduct(formModel.ProductId));
 
                     _productService.SaveProduct(product);
-
+                    
+                    TempData["SuccessMessage"] = AppStrings.ProductEditSuccessMessage;
                     //return RedirectToAction(nameof(Details), new { id = vehicle.Id });
                     return Json(product);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogWarning("Error attempting to save product", ex.Message);
-                    TempData["Error"] = "Error attempting to save product. Please try again.";
+                    TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
                 }
             }
 

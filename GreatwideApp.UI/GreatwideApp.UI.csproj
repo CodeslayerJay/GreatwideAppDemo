@@ -17,11 +17,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Controllers\api\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="..\GreatwideApp.Domain\GreatwideApp.Domain.csproj" />
     <ProjectReference Include="..\GreatwideApp.Infrastructure\GreatwideApp.Infrastructure.csproj" />
   </ItemGroup>

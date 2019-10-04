@@ -21,7 +21,7 @@ namespace GreatwideApp.Infrastructure.Data
 
             // Define our models to map from database schema using configurations
             var dbConfig = new DbModelConfig(modelBuilder);
-            //dbConfig.ConfigureProduct();
+            dbConfig.ConfigureProduct();
             dbConfig.ConfigureProductModel();
             dbConfig.ConfigureProductReview();
 

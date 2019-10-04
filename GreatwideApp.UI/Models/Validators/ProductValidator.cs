@@ -11,6 +11,17 @@ namespace GreatwideApp.UI.Models.Validators
     {
         public ProductValidator()
         {
+
+            RuleFor(x => x.Name).Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty().MaximumLength(50);
+
+            RuleFor(x => x.ProductNumber).Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty().WithMessage("Product Number is required.")
+                .MaximumLength(25);
+
+            RuleFor(x => x.Color).Cascade(CascadeMode.StopOnFirstFailure)
+                .MaximumLength(15);
+
             RuleFor(x => x.ListPrice).Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty().WithMessage("List Price is required.")
                 .Must(ListPrice => PriceMustBeACurrency(ListPrice.ToString()))
@@ -22,7 +33,7 @@ namespace GreatwideApp.UI.Models.Validators
 
             RuleFor(x => x.SellStartDate).Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty().WithMessage("Sell Start Date is required.")
-                .LessThanOrEqualTo(DateTime.Today).WithMessage("Date must be today or earlier.");
+                .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Date must be today or later.");
         }
     }
 }
