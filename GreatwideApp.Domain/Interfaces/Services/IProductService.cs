@@ -11,5 +11,7 @@ namespace GreatwideApp.Domain.Interfaces.Services
         IEnumerable<Product> GetProducts(int skip = 0, int size = 30);
         void SaveProduct(Product product);
         IEnumerable<ProductModel> GetAllProductModels();
+        Product GetByProductNumber(string productNumber);
+        Product GetByProductName(string productName);
     }
 }

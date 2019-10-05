@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GreatwideApp.Domain.Entities;
+using GreatwideApp.Domain.Exceptions;
 using GreatwideApp.Domain.Interfaces.Services;
 using GreatwideApp.UI.Models;
 using GreatwideApp.UI.Models.Validators;
@@ -89,7 +90,7 @@ namespace GreatwideApp.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Save(ProductFormModel formModel)
         {
-            var _validator = new ProductValidator();
+            var _validator = new ProductValidator(_productService);
             var results = _validator.Validate(formModel);
 
             if (results.Errors.Any())
@@ -104,18 +105,22 @@ namespace GreatwideApp.UI.Controllers
             {
                 try
                 {
-
+                    
                     var product = (formModel.ProductId == AppStrings.NotSet) ?
                         // Map form model to new entity
                             _mapper.Map<Product>(formModel) :
                         // Map form model to existing entity
                             _mapper.Map<ProductFormModel, Product>(formModel, _productService.GetProduct(formModel.ProductId));
-
+                    
                     _productService.SaveProduct(product);
                     
                     TempData["SuccessMessage"] = AppStrings.ProductEditSuccessMessage;
                     //return RedirectToAction(nameof(Details), new { id = vehicle.Id });
                     return RedirectToAction(nameof(Index));
+                }
+                catch (ProductSpecException ex)
+                {
+                    TempData["ErrorMessage"] = ex.Message;
                 }
                 catch (Exception ex)
                 {

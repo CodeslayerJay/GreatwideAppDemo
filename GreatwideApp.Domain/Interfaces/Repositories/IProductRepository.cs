@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GreatwideApp.Domain.Entities;
+using GreatwideApp.Domain.Filters;
 
 namespace GreatwideApp.Domain.Interfaces.Repositories
 {
@@ -14,5 +17,6 @@ namespace GreatwideApp.Domain.Interfaces.Repositories
         IEnumerable<ProductReview> GetProductReviews(int productId);
         void Remove(int id);
         IEnumerable<ProductModel> GetAllProductModels();
+        IEnumerable<Product> Find(Expression<Func<Product, bool>> predicate, ProductFilter filter = null);
     }
 }

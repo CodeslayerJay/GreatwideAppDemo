@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using GreatwideApp.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using GreatwideApp.Domain.Interfaces;
+using GreatwideApp.Domain.Filters;
 
 namespace GreatwideApp.Infrastructure.Data.Repositories
 {
@@ -26,7 +29,7 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
                 .Where(x => x.ProductModelId > 0)
                 .Include(x => x.ProductModel)
                 .Skip(skip)
-                .Take(size).OrderBy(x => x.ModifiedDate).ToList();
+                .Take(size).OrderByDescending(x => x.ProductId).ToList();
         }
 
         public Product GetById(int id)
@@ -65,6 +68,38 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
         {
             return _dbContext.ProductModel.Where(x => x.ProductModelId > 0)
                 .OrderBy(x => x.Name).ToList();
+        }
+
+        public IEnumerable<Product> Find(Expression<Func<Product, bool>> predicate, ProductFilter filter = null)
+        {
+            if (filter == null)
+                filter = new ProductFilter {
+                    Skip = 0,
+                    Size = 50,
+                    IncludeProductModel = true,
+                    IncludeProductReviews = true };
+
+            return Query(filter, predicate).ToList();
+        }
+
+        private IQueryable<Product> Query(ProductFilter filter, Expression<Func<Product, bool>> predicate = null)
+        {
+
+            var query = _dbContext.Product.Where(x => x.ProductId > 0)
+                                          .Where(x => x.ListPrice > 0);
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            if (filter.IncludeProductModel)
+                query = query.Include(x => x.ProductModel);
+
+            //if (filter.IncludeProductReviews)
+            //    query = query.Include(x => x.ProductReviews);
+
+            query = query.Skip(filter.Skip).Take(filter.Size).OrderBy(x => x.ProductId);
+            
+            return query;
         }
     }
 }

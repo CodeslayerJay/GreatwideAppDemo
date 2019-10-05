@@ -19,7 +19,7 @@ namespace GreatwideApp.UI.Models.ViewModels
 
         public string Color { get; set; }
 
-        public string ListPrice { get; set; }
+        public decimal ListPrice { get; set; }
         public string Size { get; set; }
 
         public string Style { get; set; }

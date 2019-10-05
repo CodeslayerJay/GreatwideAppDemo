@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace GreatwideApp.Domain.Entities
 {
-    //[Table("Product", Schema = "Production")]
     public partial class Product
     {
         public Product()
