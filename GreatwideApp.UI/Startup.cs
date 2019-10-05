@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using GreatwideApp.Domain.Interfaces;
 using GreatwideApp.Domain.Interfaces.Repositories;
 using GreatwideApp.Domain.Interfaces.Services;
 using GreatwideApp.Domain.Services;
 using GreatwideApp.Infrastructure.Data;
 using GreatwideApp.Infrastructure.Data.Repositories;
+using GreatwideApp.Infrastructure.Logging;
 using GreatwideApp.UI.Models.MappingProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace GreatwideApp.UI
 {
@@ -43,6 +41,7 @@ namespace GreatwideApp.UI
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddDbContext<ApplicationDbContext>(options =>

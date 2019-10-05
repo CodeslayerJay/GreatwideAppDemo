@@ -9,7 +9,11 @@ namespace GreatwideApp.Infrastructure.Data
     {
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        { }
+        {
+            // Turn off lazy loading
+            // Helps with EF N+1 Problem
+            base.ChangeTracker.LazyLoadingEnabled = false;
+        }
         
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ProductModel> ProductModel { get; set; }

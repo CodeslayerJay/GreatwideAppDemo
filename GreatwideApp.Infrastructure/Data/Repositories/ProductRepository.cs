@@ -21,17 +21,28 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Product> GetAll(int skip = 0, int size = 100)
+        public IEnumerable<Product> GetAll(int skip = 1, int size = 100)
         {
+            
+            //var totalCount = (int)Math.Ceiling(GetCount() / (float)skip);
+            //var skip = (skip > totalCount) ? 1 : skip;
+
             return _dbContext.Product
                 .Where(x => x.ProductId > 0)
                 .Where(x => x.ListPrice > 0)
                 .Where(x => x.ProductModelId > 0)
                 .Include(x => x.ProductModel)
+                .OrderByDescending(x => x.ProductId)
+                .OrderByDescending(x => x.ModifiedDate)
                 .Skip(skip)
-                .Take(size).OrderByDescending(x => x.ProductId).ToList();
+                .Take(size).ToList();
         }
 
+
+        public int GetCount()
+        {
+            return _dbContext.Product.Where(x => x.ProductId > 0).Where(x => x.ProductModelId > 0).Count();
+        }
         public Product GetById(int id)
         {
             return _dbContext.Product
@@ -58,10 +69,9 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             }
         }
 
-        public IEnumerable<ProductReview> GetProductReviews(int productId)
+        public IEnumerable<ProductReview> GetProductReviews(int productId, int size = 10)
         {
-            return _dbContext.ProductReview.Include(x => x.Product)
-                .Where(x => x.ProductId == productId).ToList();
+            return _dbContext.ProductReview.Where(x => x.ProductId == productId).Take(size).ToList();
         }
 
         public IEnumerable<ProductModel> GetAllProductModels()
@@ -94,8 +104,8 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             if (filter.IncludeProductModel)
                 query = query.Include(x => x.ProductModel);
 
-            //if (filter.IncludeProductReviews)
-            //    query = query.Include(x => x.ProductReviews);
+            if (filter.IncludeProductReviews)
+                query = query.Include(x => x.ProductReviews);
 
             query = query.Skip(filter.Skip).Take(filter.Size).OrderBy(x => x.ProductId);
             

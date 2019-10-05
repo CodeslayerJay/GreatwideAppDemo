@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GreatwideApp.Domain.Entities;
 using GreatwideApp.Domain.Exceptions;
+using GreatwideApp.Domain.Interfaces;
 using GreatwideApp.Domain.Interfaces.Services;
 using GreatwideApp.UI.Models;
 using GreatwideApp.UI.Models.Validators;
@@ -16,43 +17,77 @@ using Microsoft.Extensions.Logging;
 
 namespace GreatwideApp.UI.Controllers
 {
+    [Route("products")]
     public class ProductsController : Controller
     {
-        private readonly ILogger<ProductsController> _logger;
+        private readonly IAppLogger<ProductsController> _logger;
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductService productService, IMapper mapper)
+        public ProductsController(IProductService productService, IMapper mapper, IAppLogger<ProductsController> logger)
         {
             _logger = logger;
             _productService = productService;
             _mapper = mapper;
         }
-        public IActionResult Index(int size = 15, int skip = 1)
+
+
+        public IActionResult Index(int size = 15, int page = 1)
         {
             try
             {
-                var products = _productService.GetProducts(skip, size)
+                var products = _productService.GetProducts(((page - 1) * size), size)
                                     .Select(x => _mapper.Map<ProductViewModel>(x));
                 var viewModel = new ProductIndexViewModel
                 {
                     Products = products,
-                    Pagination = new Pagination(products.Count(), size, skip)
+                    Pagination = new Pagination(_productService.GetProductCount(), size, page)
                 };
 
                 return View(viewModel);
             }
             catch(Exception ex)
             {
-                _logger.LogInformation($"Something occured while processing request on Products/Index: {ex.Message}");
-
-                // Display a friendly message
+                _logger.LogMessage(ex.Message);
+                
                 TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
                 return RedirectToAction("Index", "Home");
             }
         }
 
-        [HttpGet("Edit/{id?}")]
+        [HttpGet("details/{id}")]
+        public IActionResult Details(int id)
+        {
+
+            try
+            {
+                var product = _mapper.Map<ProductViewModel>(_productService.GetProduct(id));
+
+                if (product == null)
+                {
+                    TempData["InfoMessage"] = AppStrings.ProductNotFoundMessage;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var viewModel = new ProductDetailViewModel
+                {
+                    Product = product,
+                    ProductReviews = _productService.GetProductReviews(product.ProductId).Select(x => _mapper.Map<ProductReviewViewModel>(x))
+                };
+
+                return View("Details", viewModel);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogMessage(ex.Message);
+
+                TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
+                return RedirectToAction("Index", "Home");
+            }
+           
+        }
+
+        [HttpGet("edit/{id?}")]
         public IActionResult Edit(int? id)
         {
             try
@@ -79,7 +114,7 @@ namespace GreatwideApp.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex.Message);
+                _logger.LogMessage(ex.Message);
 
                 TempData["ErrorMessge"] = AppStrings.GenericErrorMsg;
                 return RedirectToAction(nameof(Index));
@@ -124,7 +159,7 @@ namespace GreatwideApp.UI.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning("Error attempting to save product", ex.Message);
+                    _logger.LogMessage(ex.Message);
                     TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
                 }
             }

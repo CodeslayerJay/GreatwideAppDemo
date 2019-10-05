@@ -14,9 +14,10 @@ namespace GreatwideApp.Domain.Interfaces.Repositories
         
         Product GetById(int id);
         
-        IEnumerable<ProductReview> GetProductReviews(int productId);
+        IEnumerable<ProductReview> GetProductReviews(int productId, int size = 10);
         void Remove(int id);
         IEnumerable<ProductModel> GetAllProductModels();
         IEnumerable<Product> Find(Expression<Func<Product, bool>> predicate, ProductFilter filter = null);
+        int GetCount();
     }
 }

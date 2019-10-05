@@ -13,5 +13,8 @@ namespace GreatwideApp.Domain.Interfaces.Services
         IEnumerable<ProductModel> GetAllProductModels();
         Product GetByProductNumber(string productNumber);
         Product GetByProductName(string productName);
+        int GetProductCount();
+
+        IEnumerable<ProductReview> GetProductReviews(int productId, int size = 10);
     }
 }

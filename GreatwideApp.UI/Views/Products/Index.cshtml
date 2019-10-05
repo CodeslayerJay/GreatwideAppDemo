@@ -17,16 +17,20 @@
                 {
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
-                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <a asp-action="Details" asp-controller="Products" asp-route-id="@product.ProductId">
+                                <img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a href="#">@product.Name</a>
+                                    <a asp-action="Details" asp-controller="Products" asp-route-id="@product.ProductId">@product.Name</a>
                                 </h4>
                                 <h5>@product.ListPrice.ToString("c")</h5>
                                 <p class="card-text">Model: @product.ProductModel.Name</p>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                                <small class="float-right">
+                                    <a href="#">Add To Cart</a>
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -34,11 +38,11 @@
             </div>
 
 
-            <div class="row">
-                <div class="col-12">
+            <div class="row pt-3">
+                <div class="col-md-12">
                     @if (Model.Pagination.TotalPages > 0)
                     {
-                        <div class="row">
+                        
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -58,7 +62,7 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
+                        
                     }
                 </div>
             </div>
