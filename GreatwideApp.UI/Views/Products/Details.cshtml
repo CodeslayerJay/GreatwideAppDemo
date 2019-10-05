@@ -43,7 +43,7 @@
 
         <div class="card card-outline-secondary my-4">
             <div class="card-header">
-                Product Reviews
+                Product Reviews <small class="ml-1">(@Model.ProductReviews.Count() Total Reviews)</small>
             </div>
             <div class="card-body">
                 @if (Model.ProductReviews != null && Model.ProductReviews.Any())

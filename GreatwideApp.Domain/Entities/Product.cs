@@ -17,9 +17,9 @@ namespace GreatwideApp.Domain.Entities
         
         public string ProductNumber { get; set; }
         
-        public bool MakeFlag { get; set; }
+        public bool? MakeFlag { get; set; }
         
-        public bool FinishedGoodsFlag { get; set; } = true;
+        public bool? FinishedGoodsFlag { get; set; } = true;
         
         public string Color { get; set; }
         public short SafetyStockLevel { get; set; } = 5;
