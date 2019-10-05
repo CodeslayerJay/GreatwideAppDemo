@@ -3,46 +3,71 @@
     ViewData["Title"] = "Product Details";
 }
 
-<div class="col-lg-9">
-
-    <div class="card mt-4">
-        <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-        <div class="card-body">
-            <h3 class="card-title">@Model.Product.Name</h3>
-            <h4>@Model.Product.ListPrice.ToString("C")</h4>
-            <p class="card-text">Model: @Model.Product.ProductModel.Name</p>
-            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            4.0 stars
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Products">Products</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
+            </ol>
+        </nav>
     </div>
-    <!-- /.card -->
-
-    <div class="card card-outline-secondary my-4">
-        <div class="card-header">
-            Product Reviews
-        </div>
-        <div class="card-body">
-            @if (Model.ProductReviews != null && Model.ProductReviews.Any())
-            {
-                @foreach (var review in Model.ProductReviews)
-                {
-                    <p>@review.Comments</p>
-                    <small class="text-muted">Posted by @review.ReviewerName on @review.ReviewDate.ToShortDateString()</small>
-                    <hr>
-                    @*<span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-                    <span>4.0 stars</span>*@
-                    @Html.ReviewStars(review.Rating);
-                }
-            }
-            else
-            {
-                <h4>No reviews yet.</h4>
-            }
-
-            <a href="#" class="btn btn-success">Leave a Review</a>
-        </div>
-    </div>
-    <!-- /.card -->
-
 </div>
-<!-- /.col-lg-9 -->
+
+<div class="row">
+    <div class="col-lg-9">
+
+        <div class="card mt-4">
+            <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
+            <div class="card-body">
+                <h3 class="card-title">@Model.Product.Name</h3>
+                <h4>@Model.Product.ListPrice.ToString("C")</h4>
+                <p class="card-text">Model: @Model.Product.ProductModel.Name</p>
+
+                @if (!Model.ProductReviews.Any())
+                {
+                    <small class="text-muted">No Reviews Yet</small>
+                }
+                else
+                {
+                    @Html.ReviewStars(Model.Product.AverageRating);
+                    <span> @Model.Product.AverageRating Stars</span>
+                }
+
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-secondary" asp-action="Edit" asp-controller="Products" asp-route-id="@Model.Product.ProductId">Edit Product</a>
+            </div>
+        </div>
+        <!-- /.card -->
+
+        <div class="card card-outline-secondary my-4">
+            <div class="card-header">
+                Product Reviews
+            </div>
+            <div class="card-body">
+                @if (Model.ProductReviews != null && Model.ProductReviews.Any())
+                {
+                    @foreach (var review in Model.ProductReviews)
+                    {
+                        <p>@review.Comments</p>
+                        <small class="text-muted">Posted by @review.ReviewerName on @review.ReviewDate.ToShortDateString()</small>
+                        <hr>
+                        @Html.ReviewStars(review.Rating);
+                    }
+                }
+                else
+                {
+                    <h4>No reviews yet.</h4>
+                }
+
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Products" asp-action="AddComment" asp-route-id="@Model.Product.ProductId" class="btn btn-success">Leave a Review</a>
+            </div>
+        </div>
+        <!-- /.card -->
+
+    </div>
+    <!-- /.col-lg-9 -->
+</div>

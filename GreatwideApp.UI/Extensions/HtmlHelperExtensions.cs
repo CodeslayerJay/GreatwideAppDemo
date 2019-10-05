@@ -5,27 +5,26 @@ namespace GreatwideApp.UI.Extensions
 {
     public static class HtmlHelperExtensions
     {
-        public static string ReviewStars(this IHtmlHelper helper, int rating)
+        public static HtmlString ReviewStars(this IHtmlHelper helper, int rating)
         {
             string markup = "<span class=\"text-warning\">";
             
-            // HTML Template:
-            // <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            // <span>4.0 stars</span>
+            // Filled Star -> &#9733;
+            // Empty Star -> &#9734;
 
-            for(var i = 0; i <= rating; i++)
+            for (var i = 0; i < rating; i++)
             {
-                markup = markup + "&#9733; ";
+                markup += "&#9733; ";
             }
 
-            for(var i = 0; i <= (5 - rating); i++)
+            for (var i = 0; i < (5 - rating); i++)
             {
-                markup = markup + "&#9734; ";
+                markup += "&#9734; ";
             }
 
-            markup = markup + "</span>";
-
-            return markup;
+            markup += "</span>";
+            
+            return new HtmlString(markup);
         }
     }
 }

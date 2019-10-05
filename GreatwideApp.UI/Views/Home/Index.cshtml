@@ -31,7 +31,16 @@
                                 </p>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                                <small class="text-muted">
+                                    @if (!product.ProductReviews.Any())
+                                    {
+                                        <small class="text-muted">No Reviews Yet</small>
+                                    }
+                                    else
+                                    {
+                                        @Html.ReviewStars(product.AverageRating);
+                                    }
+                                </small>
                             </div>
                         </div>
                     </div>

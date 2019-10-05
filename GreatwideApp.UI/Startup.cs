@@ -42,7 +42,12 @@ namespace GreatwideApp.UI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            services.AddAutoMapper(typeof(MappingProfile));
+            //services.AddAutoMapper(typeof(MappingProfile(IProductService));
+            services.AddScoped(provider => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MappingProfile(provider.GetService<IProductService>()));
+            }).CreateMapper());
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

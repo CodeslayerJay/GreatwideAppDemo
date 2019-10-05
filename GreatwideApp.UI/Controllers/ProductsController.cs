@@ -100,7 +100,7 @@ namespace GreatwideApp.UI.Controllers
 
                     if (product == null)
                     {
-                        TempData["InfoMessage"] = "Product not found.";
+                        TempData["InfoMessage"] = AppStrings.ProductNotFoundMessage;
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -167,6 +167,35 @@ namespace GreatwideApp.UI.Controllers
             formModel.ProductModelSelectItems = _productService.GetAllProductModels()
                         .Select(x => new SelectListItem { Value = x.ProductModelId.ToString(), Text = x.Name });
             return View("ProductForm", formModel);
+        }
+
+        [HttpGet("{id}/add-comment")]
+        public IActionResult AddComment(int id)
+        {
+            try
+            {
+                var product = _productService.GetProduct(id);
+
+                if (product == null)
+                {
+                    TempData["InfoMessage"] = AppStrings.ProductNotFoundMessage;
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var formModel = new ReviewFormModel
+                {
+                    Product = _mapper.Map<ProductViewModel>(product)
+                };
+
+                return View("ReviewForm", formModel);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogMessage(ex.Message);
+                TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
         }
     }
 }

@@ -31,7 +31,8 @@ namespace GreatwideApp.UI.Controllers
         // Using global error handling on this entry point action
         public IActionResult Index()
         {
-            var products = _productService.GetProducts(size: 3).Select(x => _mapper.Map<ProductViewModel>(x));
+            var products = _productService.GetProducts(size: 3)
+                                .Select(x => _mapper.Map<ProductViewModel>(x));
             return View(products);
         }
 

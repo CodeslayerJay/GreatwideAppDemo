@@ -32,6 +32,7 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
                 .Where(x => x.ListPrice > 0)
                 .Where(x => x.ProductModelId > 0)
                 .Include(x => x.ProductModel)
+                .Include(x => x.ProductReviews)
                 .OrderByDescending(x => x.ProductId)
                 .OrderByDescending(x => x.ModifiedDate)
                 .Skip(skip)

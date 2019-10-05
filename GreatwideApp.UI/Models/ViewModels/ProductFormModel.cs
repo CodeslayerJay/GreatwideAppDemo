@@ -9,6 +9,10 @@ namespace GreatwideApp.UI.Models.ViewModels
 {
     public class ProductFormModel
     {
+        public ProductFormModel()
+        {
+            ProductModelSelectItems = new List<SelectListItem>();
+        }
         public int ProductId { get; set; }
         public string Name { get; set; }
 

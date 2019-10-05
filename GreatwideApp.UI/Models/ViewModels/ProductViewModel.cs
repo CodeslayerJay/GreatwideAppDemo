@@ -24,6 +24,8 @@ namespace GreatwideApp.UI.Models.ViewModels
 
         public string Style { get; set; }
 
+        public int AverageRating { get; set; }
+
         public string ProductModelId { get; set; }
 
         public virtual ProductModelViewModel ProductModel { get; set; }
