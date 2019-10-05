@@ -72,7 +72,7 @@ namespace GreatwideApp.UI.Controllers
                 var viewModel = new ProductDetailViewModel
                 {
                     Product = product,
-                    ProductReviews = _productService.GetProductReviews(product.ProductId).Select(x => _mapper.Map<ProductReviewViewModel>(x))
+                    ProductReviews = product.ProductReviews.Select(x => _mapper.Map<ProductReviewViewModel>(x))
                 };
 
                 return View("Details", viewModel);
@@ -196,6 +196,52 @@ namespace GreatwideApp.UI.Controllers
 
                 return RedirectToAction(nameof(Details), new { id });
             }
+        }
+
+        [HttpPost("{id}/add-comment")]
+        public IActionResult SaveComment(int id, ReviewFormModel formModel)
+        {
+            try
+            {
+
+                var product = _productService.GetProduct(id);
+
+                if (product == null)
+                {
+                    TempData["InfoMessage"] = AppStrings.ProductNotFoundMessage;
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var _validator = new ReviewValidator();
+                var results = _validator.Validate(formModel);
+
+                if (results.Errors.Any())
+                {
+                    foreach (var error in results.Errors)
+                    {
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _productService.SaveReview(_mapper.Map<ProductReview>(formModel));
+
+                    TempData["SuccessMessage"] = AppStrings.ReviewEditSuccessMsg;
+                    return RedirectToAction(nameof(Details), new { id });
+                }
+
+                formModel.Product = _mapper.Map<ProductViewModel>(product);
+                return View("ReviewForm", formModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage(ex.Message);
+                TempData["ErrorMessage"] = AppStrings.GenericErrorMsg;
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
         }
     }
 }

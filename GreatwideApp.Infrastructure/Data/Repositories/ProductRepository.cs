@@ -112,5 +112,13 @@ namespace GreatwideApp.Infrastructure.Data.Repositories
             
             return query;
         }
+
+        public void AddReview(ProductReview review)
+        {
+            if(review != null)
+            {
+                _dbContext.ProductReview.Add(review);
+            }
+        }
     }
 }

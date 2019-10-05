@@ -18,5 +18,6 @@ namespace GreatwideApp.Domain.Interfaces.Services
         IEnumerable<ProductReview> GetProductReviews(int productId, int size = 10);
         int GetAverageProductRating(IEnumerable<ProductReview> reviews);
         int GetAverageProductRating(int productId);
+        void SaveReview(ProductReview review);
     }
 }

@@ -15,5 +15,7 @@ namespace GreatwideApp.UI.Utilities
         public const string GenericErrorMsg = "An error occurred. Please try again.";
         public const string ProductEditSuccessMessage = "Product saved successfully.";
         public const string ProductNotFoundMessage = "Product not found.";
+
+        public const string ReviewEditSuccessMsg = "Review saved successfully.";
     }
 }

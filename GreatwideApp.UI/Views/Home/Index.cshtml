@@ -20,10 +20,11 @@
                 {
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
-                            <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                            <a asp-action="Details" asp-controller="Products" asp-route-id="@product.ProductId">
+                                <img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a href="#">@product.Name</a>
+                                    <a asp-action="Details" asp-controller="Products" asp-route-id="@product.ProductId">@product.Name</a>
                                 </h4>
                                 <h5>@product.ListPrice.ToString("c")</h5>
                                 <p class="card-text">
@@ -40,6 +41,9 @@
                                     {
                                         @Html.ReviewStars(product.AverageRating);
                                     }
+                                </small>
+                                <small class="float-right">
+                                    <a href="#">Add To Cart</a>
                                 </small>
                             </div>
                         </div>

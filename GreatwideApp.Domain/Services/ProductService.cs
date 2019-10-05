@@ -126,5 +126,16 @@ namespace GreatwideApp.Domain.Services
             return _unitOfWork.Products.GetById(productId);
         }
 
+        public void SaveReview(ProductReview review)
+        {
+            var product = _unitOfWork.Products.GetById(review.ProductId);
+
+            if (product == null)
+                throw new ProductNotFoundException(review.ProductId);
+
+            _unitOfWork.Products.AddReview(review);
+            _unitOfWork.SaveChanges();
+        }
+
     }
 }

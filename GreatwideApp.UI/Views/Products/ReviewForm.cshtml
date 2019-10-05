@@ -5,11 +5,11 @@
 }
 
 <div>
-    <h4 class="text-center">@ViewData["Title"]</h4>
+    <h4 class="text-center">@Model.Product.Name</h4>
 
     <div class="row">
         <div class="col-md-7 m-auto">
-            <form method="post" asp-action="Save" asp-controller="Products">
+            <form method="post" asp-action="SaveComment" asp-controller="Products" asp-route-id="@Model.Product.ProductId">
                 <input asp-for="ProductId" type="hidden" value="@Model.Product.ProductId"/>
                 <input asp-for="ProductReviewId" type="hidden"/>
 
@@ -17,7 +17,7 @@
                     <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
                         <div class="form-row">
                             <div class="col-md-8">
-                                <h5 class="text-muted pt-1 pb-3">Leave a Review</h5>
+                                <h5 class="text-muted pt-1 pb-3">Add Review</h5>
                             </div>
                             <div class="col-md-4 float-right">
                                 <p class="text-muted">* - required fields</p>
@@ -30,8 +30,10 @@
                                 <input asp-for="ReviewerName" class="form-control" />
                                 <span asp-validation-for="ReviewerName" class="text-danger"></span>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-8">
-                                <label asp-for="EmailAddress" class="col-form-label">Full Name*</label>
+                                <label asp-for="EmailAddress" class="col-form-label">Email Address*</label>
                                 <input asp-for="EmailAddress" class="form-control" />
                                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
                             </div>
@@ -43,10 +45,10 @@
                         </div>
 
                         <div class="form-row">
-                           
-                            <div class="form-group col-md-4">
-                                <label asp-for="Comments" class="col-form-label">Comments*</label>
-                                <textarea asp-for="Comments" class="form-control" rows="5" />
+
+                            <div class="form-group col-md-12">
+                                <label asp-for="Comments" class="col-form-label">Comments</label>
+                                <textarea asp-for="Comments" class="form-control" rows="5"></textarea>
                                 <span asp-validation-for="Comments" class="text-danger"></span>
                             </div>
 

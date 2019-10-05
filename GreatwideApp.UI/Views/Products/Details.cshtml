@@ -50,10 +50,12 @@
                 {
                     @foreach (var review in Model.ProductReviews)
                     {
-                        <p>@review.Comments</p>
-                        <small class="text-muted">Posted by @review.ReviewerName on @review.ReviewDate.ToShortDateString()</small>
-                        <hr>
                         @Html.ReviewStars(review.Rating);
+                        <p class="text-muted">@review.ReviewerName</p>
+                        <p>@review.Comments</p>
+                        <small class="text-muted">Posted on @review.ReviewDate.ToShortDateString()</small>
+                        <hr>
+
                     }
                 }
                 else

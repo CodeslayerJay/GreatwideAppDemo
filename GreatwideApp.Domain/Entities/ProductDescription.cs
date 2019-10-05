@@ -8,13 +8,12 @@ namespace GreatwideApp.Domain.Entities
     {
         
         public int ProductDescriptionId { get; set; }
-        //[Required]
-        //[StringLength(400)]
+       
         public string Description { get; set; }
-        //[Column("rowguid")]
+        
         public Guid Rowguid { get; set; }
-        //[Column(TypeName = "datetime")]
-        public DateTime ModifiedDate { get; set; }
+        
+        public DateTime ModifiedDate { get; set; } = DateTime.Now;
 
     }
 }

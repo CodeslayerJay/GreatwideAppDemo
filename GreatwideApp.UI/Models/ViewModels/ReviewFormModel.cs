@@ -21,8 +21,6 @@ namespace GreatwideApp.UI.Models.ViewModels
         [Display(Name = "Full Name")]
         public string ReviewerName { get; set; }
 
-        public DateTime ReviewDate { get; set; } = DateTime.Now;
-
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
         public int Rating { get; set; }
@@ -37,9 +35,9 @@ namespace GreatwideApp.UI.Models.ViewModels
             var ratings = new List<SelectListItem>();
 
             var totalRatingCount = 5;
-            for(var i = 0; i < totalRatingCount; i++)
+            for(var i = 1; i <= totalRatingCount; i++)
             {
-                ratings.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+                ratings.Add(new SelectListItem { Text = i.ToString() + " stars", Value = i.ToString() });
             }
 
             return ratings;

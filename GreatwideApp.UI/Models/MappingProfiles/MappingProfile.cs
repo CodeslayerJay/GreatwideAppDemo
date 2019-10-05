@@ -29,6 +29,8 @@ namespace GreatwideApp.UI.Models.MappingProfiles
             // Product Review Mappings
             CreateMap<ProductReview, ProductReviewViewModel>();
             CreateMap<ProductReview, ProductReviewResource>();
+            CreateMap<ReviewFormModel, ProductReview>();
+            CreateMap<ProductReview, ReviewFormModel>();
         }
     }
 }
