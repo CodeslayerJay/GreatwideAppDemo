@@ -19,6 +19,19 @@ namespace GreatwideApp.Domain.Services
             _unitOfWork = unitOfWork;
         }
 
+        public int GetAverageProductRating(int productId)
+        {
+            return GetAverageProductRating(_unitOfWork.Products.GetProductReviews(productId));
+        }
+
+        public int GetAverageProductRating(IEnumerable<ProductReview> reviews)
+        {
+            if (reviews == null || !reviews.Any())
+                return 0;
+
+            return Convert.ToInt32(reviews.Average(x => x.Rating));
+        }
+
         public IEnumerable<ProductReview> GetProductReviews(int productId, int size = 10)
         {
             return _unitOfWork.Products.GetProductReviews(productId, size);
