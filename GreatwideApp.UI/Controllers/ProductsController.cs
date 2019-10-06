@@ -199,6 +199,7 @@ namespace GreatwideApp.UI.Controllers
         }
 
         [HttpPost("{id}/add-comment")]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveComment(int id, ReviewFormModel formModel)
         {
             try
