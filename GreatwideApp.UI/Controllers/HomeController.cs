@@ -11,6 +11,7 @@ using AutoMapper;
 using GreatwideApp.UI.Models.ViewModels;
 using GreatwideApp.UI.Utilities;
 using GreatwideApp.Domain.Interfaces;
+using System.Data.SqlClient;
 
 namespace GreatwideApp.UI.Controllers
 {
@@ -28,12 +29,26 @@ namespace GreatwideApp.UI.Controllers
             
         }
 
-        // Using global error handling on this entry point action
         public IActionResult Index()
         {
-            var products = _productService.GetProducts(size: 3)
+            try
+            {
+                var products = _productService.GetProducts(size: 3)
                                 .Select(x => _mapper.Map<ProductViewModel>(x));
-            return View(products);
+                return View(products);
+            }
+            catch(SqlException sqlEx) when (sqlEx.Number is -2)
+            {
+                // Catch default sql timeout exception if occurs when app is starting up (locally)
+                _logger.LogMessage($"SqlTimeout occurred on { DateTime.Now }. Exception: {sqlEx.Message}");
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage(ex.Message);
+                return RedirectToAction(nameof(Error));
+            }
+
         }
 
         public IActionResult Privacy()
@@ -45,7 +60,7 @@ namespace GreatwideApp.UI.Controllers
         public IActionResult Error()
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            _logger.LogMessage(exception.Error.Message, level: 1, exception.Error);
+            _logger.LogError($"An excption error occurred on { DateTime.Now }", exception);
             
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
