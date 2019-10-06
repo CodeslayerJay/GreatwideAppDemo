@@ -150,8 +150,8 @@ namespace GreatwideApp.UI.Controllers
                     _productService.SaveProduct(product);
                     
                     TempData["SuccessMessage"] = AppStrings.ProductEditSuccessMessage;
-                    //return RedirectToAction(nameof(Details), new { id = vehicle.Id });
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Details), new { id = product.ProductId });
+                    
                 }
                 catch (ProductSpecException ex)
                 {

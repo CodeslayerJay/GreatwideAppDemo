@@ -38,9 +38,9 @@ namespace GreatwideApp.UI.Models.Validators
 
 
 
-            RuleFor(x => x.SellStartDate).Cascade(CascadeMode.StopOnFirstFailure)
-                .NotEmpty().WithMessage("Sell Start Date is required.")
-                .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Date must be today or later.");
+            //RuleFor(x => x.SellStartDate).Cascade(CascadeMode.StopOnFirstFailure)
+            //    .NotEmpty().WithMessage("Sell Start Date is required.")
+            //    .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Date must be today or later.");
         }
 
         private bool IsUniqueProductName(ProductFormModel formModel, string productName)
