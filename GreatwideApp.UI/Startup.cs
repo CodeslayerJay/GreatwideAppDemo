@@ -51,7 +51,7 @@ namespace GreatwideApp.UI
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("AdventureWorks"));
+                options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AdventureWorks;Trusted_Connection=True;MultipleActiveResultSets=true;");
             });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
